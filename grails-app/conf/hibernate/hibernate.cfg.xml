@@ -4,7 +4,7 @@
     <session-factory>
 
         <mapping package="gmt.domain" />
-        <mapping class="gmt.domain.MyDomain"/>
+        <mapping class="gmt.domain.MyJpaDomain"/>
 
     </session-factory>
 </hibernate-configuration>

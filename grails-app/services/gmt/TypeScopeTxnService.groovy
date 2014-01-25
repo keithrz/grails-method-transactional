@@ -1,14 +1,18 @@
 package gmt
 
-import gmt.domain.MyDomain
 //import grails.transaction.Transactional
 //import org.springframework.transaction.annotation.Transactional
 
 //@Transactional
 class TypeScopeTxnService {
-	static transactional = true
+    static transactional = true
 
-	def saveMyDomain(MyDomain myDomain) {
-		myDomain.save(failOnError: true)
-	}
+    def save(myDomain) {
+        myDomain.save(failOnError: true)
+    }
+
+    def getFirstDomain(domainClass) {
+        domainClass.first()
+    }
+
 }

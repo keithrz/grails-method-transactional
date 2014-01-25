@@ -1,44 +1,44 @@
 package gmt
 
-import gmt.domain.MyDomain
+import gmt.domain.MyGrailsDomain
+import gmt.domain.MyJpaDomain
 
 class MyController {
 
     MethodScopeTxnService methodScopeTxnService
     TypeScopeTxnService typeScopeTxnService
 
-    private getMyDomain() {
-        MyDomain myDomain = methodScopeTxnService.firstDomain
-        if(!myDomain) {
-            myDomain = new MyDomain(myProperty: 1)
-            typeScopeTxnService.saveMyDomain(myDomain)
-        }
-        myDomain
-    }
-
     def method() {
-        MyDomain myDomain = getMyDomain()
-        myDomain.myProperty = params.int('myProperty') ?: myDomain.myProperty
-
-        methodScopeTxnService.saveMyDomain(myDomain)
-
-//        MyDomain.withNewSession {
-//            myDomain = methodScopeTxnService.firstDomain
-////            myDomain.refresh()
-//        }
-        render(view: "index", model: [myProperty: myDomain.myProperty])
+        saveAndRenderAllDomainInstances(methodScopeTxnService)
     }
 
     def type() {
-        MyDomain myDomain = getMyDomain()
-        myDomain.myProperty = params.int('myProperty') ?: myDomain.myProperty
+        saveAndRenderAllDomainInstances(typeScopeTxnService)
+    }
 
-        typeScopeTxnService.saveMyDomain(myDomain)
+    private saveAndRenderAllDomainInstances(txnService) {
+        MyJpaDomain myJpaDomain = getInstanceAndSave(MyJpaDomain, 'myJpaProperty', txnService)
+        MyGrailsDomain myGrailsDomain = getInstanceAndSave(MyGrailsDomain, 'myGrailsProperty', txnService)
+        render(
+            view: "index",
+            model: [
+                myJpaProperty: myJpaDomain.myProperty,
+                myGrailsProperty: myGrailsDomain.myProperty
+            ]
+        )
+    }
 
-//        MyDomain.withNewSession {
-//            myDomain = methodScopeTxnService.firstDomain
-////            myDomain.refresh()
-//        }
-        render(view: "index", model: [myProperty: myDomain.myProperty])
+    private getInstanceAndSave(Class domainClass, String paramName, txnService) {
+        def myDomain = txnService.getFirstDomain(domainClass)
+        if(!myDomain) {
+            myDomain = domainClass.newInstance()
+            myDomain.myProperty = 1
+            txnService.save(myDomain)
+        }
+        myDomain.myProperty = params.int(paramName) ?: myDomain.myProperty
+
+        txnService.save(myDomain)
+
+        myDomain
     }
 }
