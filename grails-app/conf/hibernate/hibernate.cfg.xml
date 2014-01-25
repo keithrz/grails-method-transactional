@@ -1,0 +1,10 @@
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <mapping package="gmt.domain" />
+        <mapping class="gmt.domain.MyDomain"/>
+
+    </session-factory>
+</hibernate-configuration>
