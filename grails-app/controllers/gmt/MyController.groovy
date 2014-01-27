@@ -7,12 +7,19 @@ class MyController {
 
     MethodScopeTxnService methodScopeTxnService
     TypeScopeTxnService typeScopeTxnService
+    TypeScopeReadOnlyTxnService typeScopeReadOnlyTxnService
 
     def method() {
+        if(params.writeMethodFirst) {
+            methodScopeTxnService.emptyMethodWithTransaction()
+        }
         saveAndRenderAllDomainInstances(methodScopeTxnService)
     }
 
     def type() {
+        if(params.readMethodFirst) {
+            typeScopeReadOnlyTxnService.emptyMethod()
+        }
         saveAndRenderAllDomainInstances(typeScopeTxnService)
     }
 

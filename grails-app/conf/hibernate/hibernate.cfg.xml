@@ -5,6 +5,7 @@
 
         <mapping package="gmt.domain" />
         <mapping class="gmt.domain.MyJpaDomain"/>
+        <mapping class="gmt.domain.MyOtherJpaDomain"/>
 
     </session-factory>
 </hibernate-configuration>

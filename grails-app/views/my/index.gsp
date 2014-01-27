@@ -22,9 +22,13 @@
                 </div><div>
                     <label for="myGrailsProperty-readOnly">myGrailsProperty value on server:</label>
                     <span id="myGrailsProperty-readOnly"> ${MyGrailsDomain.withNewSession {MyGrailsDomain.first().myProperty}}</span>
-                </div><div>
-                    <g:submitButton name="Submit" />
                 </div>
+            </div><div>
+                <g:checkBox name="writeMethodFirst" /><label for="writeMethodFirst">Use write method before calling method-scoped service</label>
+            </div><div>
+                <g:checkBox name="readMethodFirst" /><label for="readMethodFirst">Use readOnly type-scoped service before calling writable type-scoped service</label>
+            </div><div>
+                <g:submitButton name="Submit" />
             </div>
         </g:form>
     </div>
